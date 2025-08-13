@@ -1,3 +1,10 @@
+
+mkdocs-material
+mkdocs-minify-plugin
+python-markdown-math
+regex
+ruff
+
 jinja2~=3.1
 markdown~=3.2
 mkdocs~=1.6
