@@ -121,25 +121,25 @@ export FOLLY_DEBUG_MEMORYIDLER_DISABLE_UNMAP=1  # 禁用内存释放（提升稳
 
 for (( i=0; i<$NNODES; i++ ))
 do
-  PORT=$((START_PORT + i))           # 计算当前节点端口（18000, 18001）
-  DEVICE=$((START_DEVICE + i))       # 计算 NPU 逻辑设备号（0, 1）
-  LOG_FILE="$LOG_DIR/node_$i.log"    # 日志文件路径
+  PORT=$((START_PORT + i))
+  DEVICE=$((START_DEVICE + i))
+  LOG_FILE="$LOG_DIR/node_$i.log"
   ./xllm/build/xllm/core/server/xllm \
     --model $MODEL_PATH \
-    --devices="npu:$DEVICE" \       # 绑定 NPU 设备
-    --port $PORT \                   # 服务端口
-    --master_node_addr=$MASTER_NODE_ADDR \  # Master 节点地址
-    --nnodes=$NNODES \               # 总节点数
-    --max_memory_utilization=0.86 \  # 显存利用率上限
-    --max_tokens_per_batch=40000 \   # 每批最大 token 数
-    --max_seqs_per_batch=256 \       # 每批最大序列数
-    --enable_mla=false \             # 禁用 MLA（动态批处理）
-    --block_size=128 \               # KV Cache 块大小
-    --communication_backend="hccl" \ # 使用 HCCL 通信（Ascend 专用）
-    --enable_prefix_cache=false \    # 禁用前缀缓存
-    --enable_chunked_prefill=true \  # 启用分块预填充
-    --enable_schedule_overlap=true \ # 启用计算通信重叠
-    --node_rank=$i  &                # 当前节点排名（0 或 1）
+    --devices="npu:$DEVICE" \
+    --port $PORT \
+    --master_node_addr=$MASTER_NODE_ADDR \
+    --nnodes=$NNODES \
+    --max_memory_utilization=0.86 \
+    --max_tokens_per_batch=40000 \
+    --max_seqs_per_batch=256 \
+    --enable_mla=false \
+    --block_size=128 \
+    --communication_backend="hccl" \
+    --enable_prefix_cache=false \
+    --enable_chunked_prefill=true \
+    --enable_schedule_overlap=true \
+    --node_rank=$i  &
 done
 ```
 这里使用了两个节点，可以通过 `--nnodes=$NNODES` 和`--node_rank=$i`来设置。
@@ -220,55 +220,59 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/libtorch_npu/lib  # 添加 NP
 \rm -rf core.*
 \rm -rf ~/dynamic_profiling_socket_*
 
-
 echo "$1"
 if [ "$1" = "decode" ]; then
-  echo ">>>>> decode"
   # decode模式
-  export ASCEND_RT_VISIBLE_DEVICES=8,9  # 使用 NPU 设备 8 和 9
-  ./xllm/build/xllm/core/server/xllm \ 
-    --model /path/to/your/model \  # 模型路径
-    --max_memory_utilization 0.90 \  # 最大内存利用率 90%
-    --devices="npu:1" \  # 使用指定的第二个NPU
-    --instance_role DECODE \  # 运行模式：解码
-    --enable_disagg_pd=true \  # 启用 disaggregated parameter server
-    --enable_cuda_graph=false \  
-    --enable_prefix_cache=false \  # 禁用前缀缓存
-    --backend=llm \  # 后端引擎
-    --port=9996 \  # decode服务端口
-    --xservice_addr=127.0.0.1:9889 \  # 需要与xllm_service的rpc_server_port相同
-    --host=127.0.0.1 \  # 监听 IP
-    --disagg_pd_port=7780 \  # Disagg PD 端口
-    --cluster_id=1 \  # 集群 ID
-    --device_ip=11.87.63.203 \  # 设备IP需要与指定的NPU卡相对应
-    --transfer_listen_port=26001  # 数据传输监听端口
+  echo ">>>>> decode"
+  export ASCEND_RT_VISIBLE_DEVICES=6,7  # 使用 NPU 设备 6 和 7
+
+  ./xllm/build/xllm/core/server/xllm \
+  --model /export/home/xiongjun3/models/Qwen2-7B-Instruct \
+  --max_memory_utilization 0.90 \
+  --devices="npu:1" \
+  --instance_role DECODE \
+  --enable_disagg_pd=true \
+  --enable_cuda_graph=false \
+  --enable_prefix_cache=false \
+  --backend=llm \
+  --port=9996  \
+  --xservice_addr=127.0.0.1:9889  \
+  --host=127.0.0.1 \
+  --disagg_pd_port=7780 \
+  --cluster_id=1 \
+  --device_ip=11.86.23.217 \
+  --transfer_listen_port=26001 \
+  --enable_service_routing=true
 else
-  echo ">>>>> prefill"
   # prefill模式
-  export ASCEND_RT_VISIBLE_DEVICES=8,9  # 使用 NPU 设备 8 和 9
-  ./xllm/build/xllm/core/server/xllm \ 
-    --model /export/home/xiongjun3/models/Qwen2-7B-Instruct \ 
-    --max_tokens_per_batch 102400 \  # 每批最大 token 数
-    --max_memory_utilization 0.90 \  # 最大内存利用率 90%
-    --devices="npu:1" \  # 使用指定的第二个NPU
-    --instance_role PREFILL \  # 运行模式：预填充
-    --enable_disagg_pd=true \  # 启用 disaggregated parameter server
-    --enable_cuda_graph=false \  
-    --enable_prefix_cache=false \  # 禁用前缀缓存
-    --backend=llm \  # 后端引擎
-    --port=9997 \  # prefill服务端口
-    --xservice_addr=127.0.0.1:9889 \  # 需要与xllm_service的rpc_server_port相同
-    --host=127.0.0.1 \ 
-    --cluster_id=0 \  # 集群 ID
-    --device_ip=11.87.63.202 \  # 设备IP需要与指定的NPU卡相对应
-    --transfer_listen_port=26000 \  # 数据传输监听端口
-    --disagg_pd_port=7781  # Disagg PD 端口
+  echo ">>>>> prefill"
+  export ASCEND_RT_VISIBLE_DEVICES=6,7  # 使用 NPU 设备 6 和 7 
+  
+  ./xllm/build/xllm/core/server/xllm \
+  --model /export/home/xiongjun3/models/Qwen2-7B-Instruct \
+  --max_tokens_per_batch 102400  \
+  --max_memory_utilization 0.90  \
+  --devices="npu:0"  \
+  --instance_role PREFILL \
+  --enable_disagg_pd=true \
+  --enable_cuda_graph=false \
+  --enable_prefix_cache=false \
+  --backend=llm \
+  --port=9997  \
+  --xservice_addr=127.0.0.1:9889  \
+  --host=127.0.0.1 \
+  --cluster_id=0 \
+  --device_ip=11.86.23.216 \
+  --transfer_listen_port=26000 \
+  --disagg_pd_port=7781 \
+  --enable_service_routing=true
 fi
 ```
-需要注意：PD分离在指定NPU Device的时候，需要对应的`device_ip`，这个每张卡是不一样的，具体的可以在非容器环境下的物理机器上执行下面命令看到：
+需要注意：
+- PD分离在指定NPU Device的时候，需要对应的`device_ip`，这个每张卡是不一样的，具体的可以在非容器环境下的物理机器上执行下面命令看到,其呈现的`address_{i}=`后面的值就是对应`NPU {i}`的`device_ip`。
 ```bash
 sudo cat /etc/hccn.conf
 ```
-其呈现的`address_{i}=`后面的值就是对应`NPU {i}`的`device_ip`。
+- `xservice_addr`需与`xllm_service`的`rpc_server_port`相同
 
 测试命令和上面类似，注意`curl http://localhost:{PORT}/v1/chat/completions ...`的`PORT`选择为prefill节点的`port`或者`xllm service`的`http_server_port`。
