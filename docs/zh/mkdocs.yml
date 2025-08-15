@@ -63,8 +63,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  favicon: assets/x-logo.ico
-  icon: assets/x-logo.ico
+  favicon: ../../../assets/logo.png
+  icon: ../../../assets/logo.png
   # icon:
   #   logo: logo
 
