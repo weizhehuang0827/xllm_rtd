@@ -7,6 +7,7 @@ repo_url: https://github.com/jd-opensource/xllm
 
 # Copyright
 copyright: Copyright &copy; 2025 xLLM Team
+# docs_dir: docs/zh
 # Configuration
 theme:
   name: material
@@ -166,7 +167,7 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 nav:
-  - 主页: zh/index.md
+  - 主页: index_zh.md
   - 开始使用:
     - zh/getting_started/compile.md
     - 快速开始:
