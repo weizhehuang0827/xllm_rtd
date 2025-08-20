@@ -11,7 +11,7 @@ build:
     python: "3.13"
   jobs:
     pre_build:
-      - echo "Creating symlink for Chinese index page"
+      - echo "copy index page"
       - cp docs/zh/index.md docs/index.md
 
 # Build documentation with Mkdocs
