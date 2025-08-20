@@ -189,7 +189,9 @@ nav:
       - 分布式:
         - zh/features/disagg_pd.md
       - 算子:
-        - zh/features/custom_kernel.md
+        - zh/features/groupgemm.md
+        - zh/features/ppmatmul.md
+        - zh/features/topk_topP.md
       - KV存储管理:
         - zh/features/global_kvcache.md
         - zh/features/xtensor_memory.md
