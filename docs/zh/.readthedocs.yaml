@@ -10,9 +10,9 @@ build:
   tools:
     python: "3.13"
   jobs:
-    post_build:
+    pre_build:
       - echo "Creating symlink for Chinese index page"
-      - cd $READTHEDOCS_OUTPUT/html && cp zh/index.html index.html
+      - cp docs/zh/index.html docs/index.html
 
 # Build documentation with Mkdocs
 mkdocs:
