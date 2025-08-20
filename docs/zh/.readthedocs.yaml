@@ -12,7 +12,7 @@ build:
   jobs:
     pre_build:
       - echo "Creating symlink for Chinese index page"
-      - cp docs/zh/index.html docs/index.html
+      - cp docs/zh/index.md docs/index.md
 
 # Build documentation with Mkdocs
 mkdocs:
