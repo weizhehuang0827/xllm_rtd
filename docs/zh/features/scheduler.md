@@ -27,5 +27,6 @@ xLLM实现了多种请求调度策略，支持continuous batching、chunked pref
 开启prefix_cache之后，在`Qwen3-8B`模型上，限制E2E 10s，吞吐可 **提升16%**。
 开启chunked_prefill之后，在`Qwen3-8B`模型上，限制TPOT 50ms，TTFT **下降46%**。
 
-## 注意事项
-PD分离暂不支持prefix_cache，chunked_prefill功能，使用时需关闭，设置为`false`。
+!!! warning "注意事项"
+    PD分离暂不支持prefix_cache，chunked_prefill功能，使用时需关闭，设置为`false`。
+

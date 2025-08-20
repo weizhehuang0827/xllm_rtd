@@ -22,10 +22,10 @@
 
 
 ## 性能效果
-- 开启ACLGraph功能后，在Qwen3-0.6B和Qwen3-1.7B等模型上，decode阶段吞吐**提升8%-10%**。
+- 开启ACLGraph功能后，在Qwen3-0.6B和Qwen3-1.7B等模型上，decode阶段吞吐 **提升8%-10%**。
 
-## 注意事项
-- 为新模型添加ACLGraph支持时，需要check计算过程中用到的kerenel是否实现了动态维度参数化。如果没有，需要重新实现kernel。
+!!! warning "注意事项"
+    - 为新模型添加ACLGraph支持时，需要check计算过程中用到的kerenel是否实现了动态维度参数化。如果没有，需要重新实现kernel。
 
-## 未来工作
-* 支持MoE模型Attention DP和FFN EP之间的通信操作适配不同shape。
+!!! tip "未来计划"
+    * 支持MoE模型Attention DP和FFN EP之间的通信操作适配不同shape。
