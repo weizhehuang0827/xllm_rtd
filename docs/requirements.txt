@@ -27,6 +27,7 @@ mkdocs-material
 mkdocs-material-extensions
 pygments
 pymdown-extensions
+mkdocs-minify-plugin
 
 mkdocs-git-revision-date-localized-plugin
 # Requirements for plugins
