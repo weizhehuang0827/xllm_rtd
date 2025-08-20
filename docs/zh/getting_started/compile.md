@@ -40,33 +40,3 @@ python setup.py build
 ```bash
 python setup.py bdist_wheel
 ```
-
-=== "Unordered List"
-
-    ``` markdown
-    * Sed sagittis eleifend rutrum
-    * Donec vitae suscipit est
-    * Nulla tempor lobortis orci
-    ```
-
-=== "Ordered List"
-
-    ``` markdown
-    1. Sed sagittis eleifend rutrum
-    2. Donec vitae suscipit est
-    3. Nulla tempor lobortis orci
-    ```
-
-!!! warning zhuyi
-
-    * Sed sagittis eleifend rutrum
-    * Donec vitae suscipit est
-    * Nulla tempor lobortis orci
-
-<div class="result" markdown>
-Lorem ipsum dolor sit amet, (1) consectetur adipiscing elit.
-{ .annotate }
-
-1.  I'm an annotation! I can contain `code`, __formatted
-    text__, images, ... basically anything that can be expressed in Markdown.
-</div>

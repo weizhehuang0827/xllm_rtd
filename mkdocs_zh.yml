@@ -168,6 +168,10 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - mdx_math:
+      enable_dollar_delimiter: true
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
 nav:
   - 主页: zh/index.md
   - 开始使用:

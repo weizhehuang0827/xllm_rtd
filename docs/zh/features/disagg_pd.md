@@ -73,18 +73,6 @@ ENABLE_DECODE_RESPONSE_TO_SERVICE=true ./xllm_master_serving --etcd_addr="127.0.
 !!! warning "注意事项"
     PD分离目前不支持开启prefix cache及chunked prefill功能，需要通过以下参数关闭
     ``` shell
-    --enable_prefix_cache=false (1) 
+    --enable_prefix_cache=false
     --enable_chunked_prefill=false
     ```
-{ .annotate }
-
-1.  :man_raising_hand: I'm an annotation! I can contain `code`, __formatted
-    text__, images, ... basically anything that can be expressed in Markdown.
-
-
-<!-- 
-Lorem ipsum dolor sit amet, (1) consectetur adipiscing elit.
-{ .annotate }
-
-1.  :man_raising_hand: I'm an annotation! I can contain `code`, __formatted
-    text__, images, ... basically anything that can be expressed in Markdown. -->
